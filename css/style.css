@@ -1,0 +1,359 @@
+/* 🎨 General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #121212;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* 📦 Chat Container */
+.chat-container {
+    display: flex;
+    width: 90%;
+    height: 80vh;
+    border: 1px solid #333;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 🎭 Sidebar (Friends List) */
+.sidebar {
+    width: 25%;
+    background-color: #2a2a2a;
+    padding: 20px;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Friends List Heading */
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Friends List */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 10px;
+    border-bottom: 1px solid #444;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.sidebar ul li:hover {
+    background: #007bff;
+}
+
+/* ✅ Friend List Hide on Mobile */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70%;
+        position: absolute;
+        height: 100%;
+        left: -100%;
+        top: 0;
+        z-index: 1000;
+    }
+
+    /* Show Sidebar When Active */
+    .sidebar.active {
+        left: 0;
+    }
+    .chat-container{
+        width: 100%;
+        height: 100%;
+        /* margin-top: 6%; */
+        margin-left: 50px;
+    }
+}
+
+/* 🎭 Sidebar Toggle Button */
+.toggle-sidebar {
+    display: none;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .toggle-sidebar {
+        display: block;
+    }
+}
+
+/* 💬 Chat Box */
+.chat-box {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #333;
+}
+
+/* 🏷️ Chat Header */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+.chat-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Three-Dot Menu Button */
+.menu-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: white;
+    /* display: flex;
+    flex-direction: column; */
+}
+#current-user-name{
+text-align: center;
+margin: 20px 10px;
+background-color: white;
+color: black;
+padding: 10px 0px;
+border-radius: 10px;
+}
+.add-friend{
+    input{
+        height: 30px;
+        border-radius: 10px;
+        padding-left: 5px;
+        border: none;
+    }
+    button{
+        height: 28px;
+        padding: 5px 5px;
+        margin: 10px 10px;
+        background-color: rgb(155, 227, 155);
+        border: none;
+        border-radius: 10px;
+        padding: 5px 5px;
+    }
+}
+/* 📝 Messages Container */
+.messages-container {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #555 #252525;
+}
+
+/* 💬 Message Bubbles */
+.message {
+    max-width: 75%;
+    padding: 10px 15px;
+    border-radius: 10px;
+    word-wrap: break-word;
+    font-size: 14px;
+    display: inline-block;
+    position: relative;
+}
+
+/* 🟦 Sent Messages (Right Side) */
+.sent {
+    background: #007bff;
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+    text-align: right;
+    animation: fadeInRight 0.2s ease-in-out;
+}
+
+/* ⬛ Received Messages (Left Side) */
+.received {
+    background: #2c2c2c;
+    color: white;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+    text-align: left;
+    animation: fadeInLeft 0.2s ease-in-out;
+}
+
+/* 🕒 Message Time */
+.message-time {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 3px;
+    display: block;
+}
+
+/* 🎥 Animations */
+@keyframes fadeInRight {
+    from {
+        transform: translateX(15px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        transform: translateX(-15px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* 📩 Message Input Box */
+.message-input {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background: #222;
+    border-top: 1px solid #444;
+}
+
+.message-input input {
+    flex-grow: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #444;
+    color: white;
+    outline: none;
+}
+
+.message-input button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.message-input button:hover {
+    background-color: #218838;
+}
+
+/* 🕵️‍♂️ Dropdown Menu */
+.menu-dropdown {
+    display: none;
+    position: absolute;
+    background: #333;
+    color: white;
+    right: 0;
+    min-width: 120px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    margin-top: 130px;
+    margin-right: 30px;
+}
+
+.menu-dropdown button {
+    width: 100%;
+    background: none;
+    border: none;
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: 0.3s;
+}
+
+.menu-dropdown button:hover {
+    background: #444;
+}
+
+/* ✅ Responsive Design */
+@media (max-width: 768px) {
+    .message {
+        max-width: 100%;
+        margin: 0px 0px;
+    }
+
+    .chat-box {
+        width: 100%;
+    }
+}
+.message {
+    position: relative;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 70%;
+    margin-bottom: 5px;
+    word-wrap: break-word;
+}
+
+.message.sent {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+}
+
+.message.received {
+    background-color: #f1f1f1;
+    color: black;
+    align-self: flex-start;
+}
+
+.message-time {
+    font-size: 9px;
+    color: black;
+    margin-left: 8px;
+    display: inline-block;
+}
+#logout-btn{
+    height: 30px;
+    width: 100px;
+    margin: 10px 10px;
+    background-color: #28a745;
+    border: none;
+    color: white;
+}
+#file-input{
+    width: 30px;
+}
+.chat-image {
+    max-width: 250px;
+    border-radius: 8px;
+    margin: 5px 0;
+}
+
+.chat-video {
+    max-width: 250px;
+    border-radius: 8px;
+    margin: 5px 0;
+}
