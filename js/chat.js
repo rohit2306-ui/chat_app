@@ -220,3 +220,15 @@ document.addEventListener("DOMContentLoaded", function () {
         sidebar.classList.toggle("active");
     });
 });
+const logoutBtn = document.getElementById("logout-btn");
+
+logoutBtn.addEventListener("click", () => {
+    auth.signOut()
+        .then(() => {
+            console.log("User logged out successfully");
+            window.location.href = "index.html"; // Redirect to login page
+        })
+        .catch(error => {
+            console.error("Error logging out:", error);
+        });
+});
