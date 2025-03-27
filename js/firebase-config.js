@@ -48,3 +48,17 @@ const db = getDatabase(app);
 const provider = new GoogleAuthProvider();
 
 export { app, auth, db, provider };
+
+
+
+
+
+
+
+
+
+
+
+
+
+

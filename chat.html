@@ -7,51 +7,45 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="chat-container">
-        <!-- Sidebar with Users List -->
-        <div class="sidebar">
-            <div class="add-friend">
-                <input type="text" id="friend-number" placeholder="Enter Phone Number">
-                <button id="add-friend-btn">Add Friend</button>
+    <body>
+        <button class="toggle-sidebar" id="menu-btn">☰</button>
+        <div class="chat-container">
+            <!-- Sidebar Toggle Button -->
+           
+    
+            <!-- Sidebar with Users List -->
+            <div class="sidebar" id="sidebar">
+                <div class="add-friend">
+                    <input type="text" id="friend-number" placeholder="Enter Phone Number">
+                    <button id="add-friend-btn">Add Friend</button>
+                </div>
+                <h2>Friends</h2>
+                <ul id="users-list"></ul> 
+    
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <h3 id="current-user-name">Loading...</h3>
+                    <button id="logout-btn">Logout</button>
+                </div>
             </div>
-            <h2>Friends</h2>
-            <ul id="users-list"></ul> 
-
-            <!-- User Profile -->
-            <div class="user-profile">
-                <h3 id="current-user-name">Loading...</h3>
-                <button id="logout-btn">Logout</button>
-            </div>
-        
-        </div>
-
-        <!-- Chat Box -->
-        <div class="chat-box">
-            <div class="chat-header">
-                <div class="chat-title">
-                    <h2 id="chat-user-name">Select a friend to chat</h2>
-                    <!-- ✅ 3-dot menu inside chat title -->
-                    
-                    <div class="menu-dropdown">
-                        
-                        <button id="edit-name">Edit Name</button>
-                        <button id="delete-chat">Delete Chat</button>
-                        <button id="block-user">Block User</button>
+    
+            <!-- Chat Box -->
+            <div class="chat-box">
+                <div class="chat-header">
+                    <div class="chat-title">
+                        <h2 id="chat-user-name">Select a friend to chat</h2>
                     </div>
                 </div>
-                <!-- <button class="menu-btn">⋮</button> -->
+    
+                <div id="messages" class="messages-container"></div>
+                <div class="message-input">
+                    <input type="text" id="message-input" placeholder="Type a message...">
+                    <button id="send-btn">Send</button>
+                </div>
             </div>
-
-            <div id="messages" class="messages-container"></div>
-            <div class="message-input">
-                <input type="text" id="message-input" placeholder="Type a message...">
-                <!-- <input type="file" id="file-input" accept="image/*, video/*"> -->
-                <button id="send-btn">Send</button>
-            </div>
-            
-            
         </div>
-    </div>
+    </body>
+    
 
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
