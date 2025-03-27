@@ -1,7 +1,15 @@
 import { auth, provider } from "./firebase-config.js";
-import { signInWithEmailAndPassword, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { signInWithEmailAndPassword, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// Login with Email and Password
+// ✅ Check if user is already logged in, then redirect to chat page
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        console.log("User is already logged in:", user.email);
+        window.location.href = "chat.html";  // ✅ Directly chat page pe le jao
+    }
+});
+
+// ✅ Login with Email and Password
 document.getElementById("login-btn").addEventListener("click", function () {
     const email = document.getElementById("login-email").value;
     const password = document.getElementById("login-password").value;
