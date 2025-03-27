@@ -1,8 +1,3 @@
-
-
-
-
-
 import { auth, db } from "./firebase-config.js";
 import { ref, set, get, push, onChildAdded, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
@@ -144,26 +139,34 @@ function displayMessage(message) {
 // ✅ Load Friends List & Store in `friendsList`
 
 function loadFriends() {
-    get(ref(db, `users/${currentUser.uid}/friends`)).then(snapshot => {
-        if (snapshot.exists()) {
-            userList.innerHTML = "";
-            friendsList = snapshot.val();
+    const friendsRef = ref(db, `users/${currentUser.uid}/friends`);
+    
+    onChildAdded(friendsRef, (snapshot) => {
+        const friendData = snapshot.val();
+        if (!friendData) return;
 
-            Object.keys(friendsList).forEach(friendId => {
-                get(ref(db, `users/${friendId}`)).then(friendSnapshot => {
-                    if (friendSnapshot.exists()) {
-                        const friendData = friendSnapshot.val();
-                        const friendName = friendData.name || friendsList[friendId].phone;
+        const friendPhone = friendData.phone;
 
-                        const li = document.createElement("li");
-                        li.innerText = friendName;
-                        li.dataset.phone = friendsList[friendId].phone;
-                        li.addEventListener("click", () => openChat(friendsList[friendId].phone));
-                        userList.appendChild(li);
+        get(ref(db, `users`)).then(userSnapshot => {
+            if (userSnapshot.exists()) {
+                let friendName = friendPhone;
+
+                userSnapshot.forEach(childSnapshot => {
+                    const userData = childSnapshot.val();
+                    if (userData.phone === friendPhone) {
+                        friendName = userData.name || friendPhone;
                     }
                 });
-            });
-        }
+
+                const li = document.createElement("li");
+                li.innerText = friendName;
+                li.dataset.phone = friendPhone;
+                li.addEventListener("click", () => openChat(friendPhone));
+                userList.appendChild(li);
+                
+                console.log("Friend added to UI:", friendName);
+            }
+        });
     });
 }
 
@@ -231,4 +234,68 @@ logoutBtn.addEventListener("click", () => {
         .catch(error => {
             console.error("Error logging out:", error);
         });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const addFriendBtn = document.getElementById("add-friend-btn");
+
+    addFriendBtn.addEventListener("click", function () {
+        const friendPhoneInput = document.getElementById("friend-number");
+        const friendPhone = friendPhoneInput.value.trim();
+
+        if (!friendPhone) {
+            alert("Please enter a phone number!");
+            return;
+        }
+
+        if (!auth.currentUser) {
+            alert("You need to log in first!");
+            return;
+        }
+
+        const currentUserUID = auth.currentUser.uid;
+        const userRef = ref(db, `users/${currentUserUID}/friends/${friendPhone}`);
+
+        // ✅ Check if friend exists in database
+        get(ref(db, `users`)).then(snapshot => {
+            let friendExists = false;
+            let friendUID = null;
+
+            if (snapshot.exists()) {
+                snapshot.forEach(childSnapshot => {
+                    const userData = childSnapshot.val();
+                    if (userData.phone === friendPhone) {
+                        friendExists = true;
+                        friendUID = childSnapshot.key;
+                    }
+                });
+
+                if (!friendExists) {
+                    alert("User not found! Please enter a valid phone number.");
+                    return;
+                }
+
+                // ✅ Add friend to current user's friend list
+                set(userRef, { phone: friendPhone, uid: friendUID })
+                    .then(() => {
+                        console.log(`Friend ${friendPhone} added successfully.`);
+                        alert("Friend added successfully!");
+                        friendPhoneInput.value = "";
+
+                        // ✅ Auto-update UI (no need to refresh)
+                        loadFriends();
+                    })
+                    .catch(error => console.error("Error adding friend:", error));
+
+                // ✅ Add current user in friend's friend list
+                const friendRef = ref(db, `users/${friendUID}/friends/${auth.currentUser.phone}`);
+                set(friendRef, { phone: auth.currentUser.phone, uid: currentUserUID })
+                    .then(() => console.log(`Added mutual friendship with ${friendPhone}`))
+                    .catch(error => console.error("Error adding mutual friend:", error));
+            } else {
+                alert("User not found in database!");
+            }
+        });
+    });
 });
